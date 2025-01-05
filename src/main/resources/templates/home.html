@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <div class="container">
+        <h1 data-th-text="${name}">
+            Welcome to home page
+        </h1>
+        <p>Yt : <span data-th-text="${YT}"></span></p>
+        <p>Git Repo : <span th:text="${git}"></span></p>
+
+        <a th:href="${git}" target="_blank" >Click here to open</a>
+        <p>
+            New para
+        </p>
+    </div>
+</body>
+</html>
