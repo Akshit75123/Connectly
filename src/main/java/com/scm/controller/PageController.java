@@ -98,6 +98,7 @@ public class PageController {
         // "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")
         // .build();
         // Avoided Builder as it is not linking stable with default value
+
         User user = new User();
         user.setName(userForm.getName());
         user.setEmail(userForm.getEmail());
