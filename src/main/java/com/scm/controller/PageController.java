@@ -29,11 +29,11 @@ public class PageController {
     }
 
     @RequestMapping("/home")
-    public String home(Model model) {
-        System.out.println("Home Page handle");
-        model.addAttribute("name", "Substring Technologies");
-        model.addAttribute("YT", "https://youtube.com/");
-        model.addAttribute("git", "https://github.com/Akshit75123");
+    public String home() {
+        // System.out.println("Home Page handle");
+        // model.addAttribute("name", "Substring Technologies");
+        // model.addAttribute("YT", "https://youtube.com/");
+        // model.addAttribute("git", "https://github.com/Akshit75123");
         return "home";
     }
 

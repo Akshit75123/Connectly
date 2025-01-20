@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,7 +58,7 @@ public class SecurityConfig {
 
     // this method is used to secure routes and manage which route is to be secured
     // and which is not.
-    @Bean
+    @Bean("mySecChain")
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         // configuration of urls - public or private
@@ -104,6 +105,11 @@ public class SecurityConfig {
         httpSecurity.logout(logoutForm -> {
             logoutForm.logoutUrl("/logout");
             logoutForm.logoutSuccessUrl("/login?logout=true");
+        });
+
+        // oauth configuations
+        httpSecurity.oauth2Login(oauth -> {
+            oauth.loginPage("/login");
         });
 
         return httpSecurity.build();
