@@ -79,7 +79,7 @@ public class SecurityConfig {
             // my login route
             formLogin.loginPage("/login")
                     .loginProcessingUrl("/authenticate")
-                    .successForwardUrl("/user/dashboard")
+                    .successForwardUrl("/user/contacts/add")
                     // .failureForwardUrl("/login?error=true")
                     .usernameParameter("email")
                     .passwordParameter("password");
@@ -106,16 +106,17 @@ public class SecurityConfig {
         });
         // csrf is diasbled because /logout is not working without it.
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
-        // configuring logout
-        httpSecurity.logout(logoutForm -> {
-            logoutForm.logoutUrl("/logout");
-            logoutForm.logoutSuccessUrl("/login?logout=true");
-        });
 
         // oauth configuations
         httpSecurity.oauth2Login(oauth -> {
             oauth.loginPage("/login");
             oauth.successHandler(handler);
+        });
+
+        // configuring logout
+        httpSecurity.logout(logoutForm -> {
+            logoutForm.logoutUrl("/logout");
+            logoutForm.logoutSuccessUrl("/login?logout=true");
         });
 
         return httpSecurity.build();
