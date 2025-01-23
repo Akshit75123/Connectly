@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.*;
+
 @Entity
 @Getter
 @Setter
@@ -17,9 +18,10 @@ public class Contact {
     private String email;
     private String phoneNumber;
     private String picture;
+    private String address;
     private String description;
-    private boolean favorite=false;
-    //private List<String> socialLinks=new ArrayList<>();
+    private boolean favorite = false;
+    // private List<String> socialLinks=new ArrayList<>();
 
     private String websiteLink;
     private String LinkedInLink;
@@ -27,6 +29,6 @@ public class Contact {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
-    private List<SocialLink> links=new ArrayList<>();
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<SocialLink> links = new ArrayList<>();
 }

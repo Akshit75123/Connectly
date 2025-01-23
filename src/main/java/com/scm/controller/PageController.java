@@ -39,13 +39,13 @@ public class PageController {
 
     @RequestMapping("/about")
     public String aboutPage() {
-        System.out.println("About page loading");
+        // System.out.println("About page loading");
         return "about";
     }
 
     @RequestMapping("/services")
     public String servicesPage() {
-        System.out.println("Services page loading");
+        // System.out.println("Services page loading");
         return "services";
     }
 
@@ -79,7 +79,7 @@ public class PageController {
             HttpSession session) {
         // System.out.println("Processing form");
         // fetch form data
-        System.out.println(userForm);
+        // System.out.println(userForm);
         // validate form data
 
         if (rBindingResult.hasErrors())
@@ -108,7 +108,7 @@ public class PageController {
         user.setProfilePic(
                 "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg");
         User saveUser = userService.saveUser(user);
-        System.out.println("user is saved");
+        // System.out.println("user is saved");
         // message='Registration Successful'
 
         // add the message -- using session
