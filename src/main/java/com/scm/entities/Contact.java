@@ -26,6 +26,8 @@ public class Contact {
     private String websiteLink;
     private String LinkedInLink;
 
+    private String cloudinaryImagePublicId;
+
     @ManyToOne
     private User user;
 

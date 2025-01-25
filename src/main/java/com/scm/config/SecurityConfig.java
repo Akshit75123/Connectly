@@ -77,7 +77,7 @@ public class SecurityConfig {
             // my login route
             formLogin.loginPage("/login")
                     .loginProcessingUrl("/authenticate")
-                    .successForwardUrl("/user/contacts/add")
+                    .successForwardUrl("/user/profile")
                     // .failureForwardUrl("/login?error=true")
                     .usernameParameter("email")
                     .passwordParameter("password");

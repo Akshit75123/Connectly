@@ -1,31 +1,44 @@
 package com.scm.controller;
 
+import org.springframework.data.domain.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.scm.entities.Contact;
 import com.scm.entities.User;
 import com.scm.forms.ContactForm;
+import com.scm.helpers.AppConstants;
 import com.scm.helpers.Helper;
+import com.scm.helpers.Message;
+import com.scm.helpers.MessageType;
 import com.scm.services.ContactService;
+import com.scm.services.ImageService;
 import com.scm.services.UserService;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/user/contacts")
 public class ContactController {
 
     @Autowired
-    ContactService contactService;
+    private ContactService contactService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private ImageService imageService;
 
     private Logger logger = LoggerFactory.getLogger(ContactController.class);
 
@@ -34,7 +47,6 @@ public class ContactController {
     public String addContactView(Model model) {
 
         ContactForm contactForm = new ContactForm();
-        contactForm.setName("Akshit");
         contactForm.setFavorite(true);
 
         model.addAttribute("contactForm", contactForm);
@@ -43,15 +55,36 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String saveContact(@ModelAttribute ContactForm contactForm, Authentication authentication) {
-        // process form-data
+    public String saveContact(@Valid @ModelAttribute ContactForm contactForm, BindingResult result,
+            Authentication authentication, HttpSession session) {
+
+        // process the form data
+
+        // 1 validate form
+
+        if (result.hasErrors()) {
+
+            session.setAttribute("message", Message.builder()
+                    .content("Please correct the following errors")
+                    .type(MessageType.red)
+                    .build());
+            return "user/add_contact";
+        }
 
         String username = Helper.getEmailOfLoggedInUser(authentication);
+        // form ---> contact
 
         User user = userService.getUserByEmail(username);
+        // the contact image
+
+        // String filename = UUID.randomUUID().toString();
+
+        // String fileURL = imageService.uploadImage(contactForm.getContactImage(),
+        // filename);
 
         Contact contact = new Contact();
         contact.setName(contactForm.getName());
+        contact.setFavorite(contactForm.isFavorite());
         contact.setEmail(contactForm.getEmail());
         contact.setPhoneNumber(contactForm.getPhoneNumber());
         contact.setAddress(contactForm.getAddress());
@@ -59,10 +92,42 @@ public class ContactController {
         contact.setUser(user);
         contact.setLinkedInLink(contactForm.getLinkedInLink());
         contact.setWebsiteLink(contactForm.getWebsiteLink());
+        // contact.setPicture(fileURL);
+        // contact.setCloudinaryImagePublicId(filename);
+
+        // set the contact page url
 
         contactService.save(contact);
-        // System.out.println(contactForm);
 
+        session.setAttribute("message", Message.builder()
+                .content("Contact Saved Successfully")
+                .type(MessageType.green)
+                .build());
+
+        // redirect
         return "redirect:/user/contacts/add";
+    }
+
+    // VIEW CONTACTS
+    @RequestMapping
+    public String viewContacts(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction, Model model,
+            Authentication authentication) {
+
+        String username = Helper.getEmailOfLoggedInUser(authentication);
+
+        User user = userService.getUserByEmail(username);
+
+        Page<Contact> pageContact = contactService.getByUser(user, page, size, sortBy, direction);
+
+        // int totalPages = pageContact.getSize();
+
+        model.addAttribute("pageContact", pageContact);
+
+        model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
+        return "user/contacts";
     }
 }
