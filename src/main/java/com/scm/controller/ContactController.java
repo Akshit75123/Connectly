@@ -1,6 +1,9 @@
 package com.scm.controller;
 
 import org.springframework.data.domain.Page;
+
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,7 +84,7 @@ public class ContactController {
 
         // String filename = UUID.randomUUID().toString();
 
-        // String fileURL = imageService.uploadImage(contactForm.getContactImage(),
+        // String fileURL = imageService.uploadImage(contactForm.getContactImage());
         // filename);
 
         Contact contact = new Contact();
@@ -137,6 +141,7 @@ public class ContactController {
 
     @RequestMapping("/search")
     public String searchHandler(
+
             @ModelAttribute ContactSearchForm contactSearchForm,
             @RequestParam(value = "size", defaultValue = AppConstants.PAGE_SIZE + "") int size,
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -170,5 +175,18 @@ public class ContactController {
         model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
 
         return "user/search";
+    }
+
+    // delete contact
+    @RequestMapping("/delete/{contactId}")
+    public String deleteContact(@PathVariable String contactId, HttpSession session) {
+
+        contactService.delete(contactId);
+
+        logger.info("userId : ", contactId);
+        session.setAttribute("message", Message.builder().content("Content is successfully deleted")
+                .type(MessageType.green).build());
+
+        return "redirect:/user/contacts";
     }
 }

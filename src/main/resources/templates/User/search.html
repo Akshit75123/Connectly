@@ -34,6 +34,7 @@
         <!-- copied from contacts  -->
         <div class="contact_container p-5">
           <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div data-th-replace="message::messagebox"></div>
             <form
               data-th-action="@{'/user/contacts/search'}"
               data-th-object="${contactSearchForm}"
@@ -157,9 +158,18 @@
                   </td>
                   <td class="px-6 py-4">
                     <div>
-                      <a href=""><i class="fa-solid fa-eye h-6 w-6"></i> </a>
+                      <!-- View button -->
+                      <button th:onclick="loadContactData([[${c.id}]])">
+                        <i class="fa-solid fa-eye h-6 w-6"></i>
+                      </button>
+
+                      <!-- Edit button (You might want to link to an edit page or trigger an edit action) -->
                       <a href=""><i class="fa-solid fa-pen h-6 w-6"></i></a>
-                      <a href=""><i class="fa-solid fa-trash h-6 w-6"></i></a>
+
+                      <!-- Delete button -->
+                      <button th:onclick="deleteContact([[${c.id}]])">
+                        <i class="fa-solid fa-trash h-6 w-6"></i>
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -213,9 +223,10 @@
             </h1>
           </div>
         </div>
+        <div data-th-replace="~{user/contact_modals::contact}"></div>
       </div>
     </div>
-
+    <script data-th-src="@{'/js/contacts.js'}"></script>
     <script>
       console.log("this is a dashboard");
     </script>
