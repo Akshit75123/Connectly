@@ -15,7 +15,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,6 +22,81 @@ import lombok.ToString;
 public class ContactForm {
     @NotBlank(message = "Name is required")
     private String name;
+
+    public @NotBlank(message = "Name is required") String getName() {
+        return name;
+    }
+
+    public void setName(@NotBlank(message = "Name is required") String name) {
+        this.name = name;
+    }
+
+    public @NotBlank(message = "Email is required") @Email(message = "Invalid email address") String getEmail() {
+        return email;
+    }
+
+    public void setEmail(
+            @NotBlank(message = "Email is required") @Email(message = "Invalid email address") String email) {
+        this.email = email;
+    }
+
+    public @NotBlank(message = "Phone Number is required") @Pattern(regexp = "^[0-9]{10}$", message = "Invalid Phone Number") String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(
+            @NotBlank(message = "Phone Number is required") @Pattern(regexp = "^[0-9]{10}$", message = "Invalid Phone Number") String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public @NotBlank(message = "Address is required") String getAddress() {
+        return address;
+    }
+
+    public void setAddress(@NotBlank(message = "Address is required") String address) {
+        this.address = address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public String getWebsiteLink() {
+        return websiteLink;
+    }
+
+    public void setWebsiteLink(String websiteLink) {
+        this.websiteLink = websiteLink;
+    }
+
+    public String getLinkedInLink() {
+        return linkedInLink;
+    }
+
+    public void setLinkedInLink(String linkedInLink) {
+        this.linkedInLink = linkedInLink;
+    }
+
+    public MultipartFile getContactImage() {
+        return contactImage;
+    }
+
+    public void setContactImage(MultipartFile contactImage) {
+        this.contactImage = contactImage;
+    }
+
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email address")
 
@@ -41,4 +115,15 @@ public class ContactForm {
     // resolution of the file
 
     private MultipartFile contactImage;
+
+    private String picture;
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
 }

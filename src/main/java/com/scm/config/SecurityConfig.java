@@ -46,6 +46,9 @@ public class SecurityConfig {
     @Autowired
     private OAuthAuthenticationSuccessHandler handler;
 
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
+
     // configuration of authentication provider for spring security
 
     // this method is used to fetch user data from database
@@ -100,6 +103,7 @@ public class SecurityConfig {
             // }
 
             // })
+            formLogin.failureHandler(authFailureHandler);
 
         });
         // csrf is diasbled because /logout is not working without it.
